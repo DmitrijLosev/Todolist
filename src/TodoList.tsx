@@ -1,77 +1,87 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {FiltrationButton} from "./FiltrationButton";
 import {TaskType} from "./App";
 import "./App.css"
+import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 /*import {Task} from "./Task";*/
 
 
 export type FilterType = "All" | "Active" | "Completed"
 
 export type TodoListPropsType = {
+    id: string,
     title: string,
     tasks: TaskType[],
-    deleteTask: (id: string) => void,
-    changeFilter: (filtration: FilterType) => void,
-    addTask: (newTaskTitle: string) => void,
-    changeStatus: (idIsDone: string, isDone: boolean) => void
-    filterValue:FilterType
+    deleteTask: (id: string, todoId: string) => void,
+    changeFilter: (filtration: FilterType, todolistId: string) => void,
+    addTask: (newTaskTitle: string, todoId: string | null) => void,
+    changeStatus: (idIsDone: string, isDone: boolean, todoId: string) => void
+    filterValue: FilterType
+    deleteTodo: (id: string) => void
+    changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
+    changeTodoTitle: (todoId: string, newTitle: string) => void
 }
 export const TodoList: React.FC<TodoListPropsType> = (props) => {
-    const {title, tasks, deleteTask, changeFilter, addTask, changeStatus, filterValue} = props;
+    const {
+        id,
+        title,
+        tasks,
+        deleteTask,
+        changeFilter,
+        addTask,
+        changeStatus,
+        filterValue,
+        deleteTodo,
+        changeTaskTitle,
+        changeTodoTitle
+    } = props;
 
-    const [newTaskTitle, setNewTaskTitle] = useState<string>("")
-    const [error, setError] = useState<string | null>(null)
-
-    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            setNewTaskTitle(e.currentTarget.value)
-        }
-    const onKeyPressInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === "Enter") {
-            addTaskHandler()
-        }
+    const removeTodo = () => {
+        deleteTodo(id)
     }
-    const addTaskHandler = () => {
-        if (newTaskTitle.trim()) {
-            addTask(newTaskTitle.trim());
-            setNewTaskTitle("")
-        } else {
-            setError("Field is required")
-        }
+    const addTaskForForm = (title: string) => {
+        addTask(title, id)
     }
-
+    const callBackChangeTodoTitle = (newTitle: string) => {
+        changeTodoTitle(id, newTitle)
+    }
 
     return (
         <div className="todolist">
-            <h3>{title}</h3>
-            <div>
-                <input value={newTaskTitle} onChange={onChangeInputHandler} onKeyPress={onKeyPressInputHandler}
-                       className={error ? "error" : ""}/>
-                <button onClick={addTaskHandler}>+</button>
-                {error && <div className="error-message">{error}</div>}
-            </div>
+            <h3><EditableSpan title={title} callback={callBackChangeTodoTitle}/></h3>
+            <button onClick={removeTodo}>x</button>
+            <AddItemForm addItem={addTaskForForm}/>
             <ul>
                 {tasks.map((t) => {
                     const onClickDeleteButtonHandler = () => {
-                        deleteTask(t.id)
+                        deleteTask(t.id, id)
                     }
                     const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        changeStatus(t.id, e.currentTarget.checked)
+                        changeStatus(t.id, e.currentTarget.checked, id)
                     }
+                    const callBackChangeTaskTitle = (newTitle: string) => {
+                        changeTaskTitle(id, t.id, newTitle)
+                    }
+
                     return <li key={t.id} className={t.isDone ? "done" : ""}>
                         <input type="checkbox" checked={t.isDone}
-                               onChange={onChangeCheckBoxHandler}/><span>{t.title}</span>
+                               onChange={onChangeCheckBoxHandler}/>
+                        <EditableSpan title={t.title} callback={callBackChangeTaskTitle}/>
                         <button onClick={onClickDeleteButtonHandler}>x</button>
                     </li>
                 })}
             </ul>
             <div>
-                <FiltrationButton title={"All"} changeFilter={changeFilter} filterValue={filterValue}/>
-                <FiltrationButton title={"Active"} changeFilter={changeFilter} filterValue={filterValue}/>
-                <FiltrationButton title={"Completed"} changeFilter={changeFilter} filterValue={filterValue}/>
+                <FiltrationButton title={"All"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
+                <FiltrationButton title={"Active"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
+                <FiltrationButton title={"Completed"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
             </div>
         </div>
 
     );
 };
+
+
+
 
