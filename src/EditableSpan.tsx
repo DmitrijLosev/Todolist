@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
+import {TextField} from "@mui/material";
 
 type EditableSpanPropsType = {
     title: string
@@ -9,9 +10,9 @@ export function EditableSpan(props: EditableSpanPropsType) {
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const [inputValue, setInputValue] = useState<string>("")
-const [error,setError]= useState(false)
+const [error,setError]= useState("")
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(false)
+        setError("")
         setInputValue(e.currentTarget.value)
     }
     const onBlurInputHandler = () => {
@@ -20,7 +21,7 @@ const [error,setError]= useState(false)
             setInputValue("")
             setEditMode(false)}
         else {
-            setError(true)
+            setError("Input is required")
         }
 
     }
@@ -29,7 +30,10 @@ const [error,setError]= useState(false)
         setInputValue(props.title)
     }
 
-    return editMode ? <> <input value={inputValue} onChange={onChangeInputHandler} onBlur={onBlurInputHandler} autoFocus/>
-        {error && <span style={{"color":"red"}}>input is required</span>} </> :
+    return editMode ? <TextField
+            value={inputValue} onChange={onChangeInputHandler} onBlur={onBlurInputHandler} autoFocus
+            id="outlined-basic" variant="outlined" error={!!error} helperText={error}
+        />
+        :
         <span onDoubleClick={spanOnDoubleClickHandler}>{props.title}</span>
 }

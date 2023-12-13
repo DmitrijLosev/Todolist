@@ -1,13 +1,16 @@
 import React, {ChangeEvent} from "react";
-import {FiltrationButton} from "./FiltrationButton";
 import {TaskType} from "./App";
 import "./App.css"
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Button, ButtonGroup, Checkbox, IconButton} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+import UnpublishedRoundedIcon from '@mui/icons-material/UnpublishedRounded';
+import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
 /*import {Task} from "./Task";*/
 
 
-export type FilterType = "All" | "Active" | "Completed"
+export type FilterType = "all" | "active" | "completed"
 
 export type TodoListPropsType = {
     id: string,
@@ -46,13 +49,18 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
     const callBackChangeTodoTitle = (newTitle: string) => {
         changeTodoTitle(id, newTitle)
     }
-
+    const onClickAllFilterButtonHandler = () => changeFilter("all", id);
+    const onClickActiveFilterButtonHandler = () => changeFilter("active", id);
+    const onClickCompletedFilterButtonHandler = () => changeFilter("completed", id);
     return (
         <div className="todolist">
-            <h3><EditableSpan title={title} callback={callBackChangeTodoTitle}/></h3>
-            <button onClick={removeTodo}>x</button>
-            <AddItemForm addItem={addTaskForForm}/>
-            <ul>
+            <h3><EditableSpan title={title} callback={callBackChangeTodoTitle}/>
+                <IconButton onClick={removeTodo} size="large"
+                ><Delete/>
+                </IconButton>
+            </h3>
+            <AddItemForm addItem={addTaskForForm} itemTitle={"New Task Title"}/>
+            <ul style={{"listStyle":"none", "padding":"0"}}>
                 {tasks.map((t) => {
                     const onClickDeleteButtonHandler = () => {
                         deleteTask(t.id, id)
@@ -65,18 +73,28 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
                     }
 
                     return <li key={t.id} className={t.isDone ? "done" : ""}>
-                        <input type="checkbox" checked={t.isDone}
-                               onChange={onChangeCheckBoxHandler}/>
+                        <Checkbox
+                            checked={t.isDone}
+                            onChange={onChangeCheckBoxHandler}
+                            icon={< UnpublishedRoundedIcon/>}
+                            checkedIcon={< TaskAltRoundedIcon/>}
+                        />
                         <EditableSpan title={t.title} callback={callBackChangeTaskTitle}/>
-                        <button onClick={onClickDeleteButtonHandler}>x</button>
+                        <IconButton onClick={onClickDeleteButtonHandler} size="small"
+                        ><Delete/>
+                        </IconButton>
                     </li>
                 })}
             </ul>
-            <div>
-                <FiltrationButton title={"All"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
-                <FiltrationButton title={"Active"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
-                <FiltrationButton title={"Completed"} changeFilter={changeFilter} filterValue={filterValue} id={id}/>
-            </div>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                <Button onClick={onClickAllFilterButtonHandler}
+                        variant={filterValue === "all" ? "outlined" : "contained"}>All</Button>
+                <Button onClick={onClickActiveFilterButtonHandler}
+                        variant={filterValue === "active" ? "outlined" : "contained"}>Active</Button>
+                <Button onClick={onClickCompletedFilterButtonHandler}
+                        variant={filterValue === "completed" ? "outlined" : "contained"}>Completed</Button>
+
+            </ButtonGroup>
         </div>
 
     );
