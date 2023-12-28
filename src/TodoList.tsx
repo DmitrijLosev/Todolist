@@ -7,7 +7,12 @@ import {Button, ButtonGroup, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import UnpublishedRoundedIcon from '@mui/icons-material/UnpublishedRounded';
 import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
-/*import {Task} from "./Task";*/
+import {useDispatch, useSelector} from "react-redux";
+import {ActionsType, RootStateType} from "./state/store";
+import {Dispatch} from "redux";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC, deleteTodoAllTasksAC} from "./state/tasks-reducer";
+import {changeTodoFilterAC, changeTodoTitleAC, deleteTodoAC} from "./state/todolist-reducer";
+
 
 
 export type FilterType = "all" | "active" | "completed"
@@ -15,43 +20,40 @@ export type FilterType = "all" | "active" | "completed"
 export type TodoListPropsType = {
     id: string,
     title: string,
-    tasks: TaskType[],
-    deleteTask: (id: string, todoId: string) => void,
-    changeFilter: (filtration: FilterType, todolistId: string) => void,
-    addTask: (newTaskTitle: string, todoId: string | null) => void,
-    changeStatus: (idIsDone: string, isDone: boolean, todoId: string) => void
     filterValue: FilterType
-    deleteTodo: (id: string) => void
-    changeTaskTitle: (todoId: string, taskId: string, newTitle: string) => void
-    changeTodoTitle: (todoId: string, newTitle: string) => void
 }
 export const TodoList: React.FC<TodoListPropsType> = (props) => {
     const {
         id,
         title,
-        tasks,
-        deleteTask,
-        changeFilter,
-        addTask,
-        changeStatus,
         filterValue,
-        deleteTodo,
-        changeTaskTitle,
-        changeTodoTitle
     } = props;
 
+    const taskState=useSelector<RootStateType,TaskType[]>(state => state.tasks[id])
+    const dispatch=useDispatch<Dispatch<ActionsType>>()
+
+    let filteredTasks = taskState;
+    if (filterValue === "active") {
+        filteredTasks = taskState.filter(t => !t.isDone)
+    }
+    if (filterValue === "completed") {
+        filteredTasks = taskState.filter(t => t.isDone)
+    }
+
     const removeTodo = () => {
-        deleteTodo(id)
+        dispatch(deleteTodoAC(id))
+        dispatch(deleteTodoAllTasksAC(id))
     }
     const addTaskForForm = (title: string) => {
-        addTask(title, id)
+        dispatch(addTaskAC(title,id))
     }
     const callBackChangeTodoTitle = (newTitle: string) => {
-        changeTodoTitle(id, newTitle)
+        dispatch(changeTodoTitleAC(id,newTitle))
     }
-    const onClickAllFilterButtonHandler = () => changeFilter("all", id);
-    const onClickActiveFilterButtonHandler = () => changeFilter("active", id);
-    const onClickCompletedFilterButtonHandler = () => changeFilter("completed", id);
+    const onClickAllFilterButtonHandler = () => dispatch(changeTodoFilterAC(id,"all"))
+    const onClickActiveFilterButtonHandler = () => dispatch(changeTodoFilterAC(id,"active"))
+    const onClickCompletedFilterButtonHandler = () => dispatch(changeTodoFilterAC(id,"completed"))
+
     return (
         <div className="todolist">
             <h3><EditableSpan title={title} callback={callBackChangeTodoTitle}/>
@@ -61,15 +63,15 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
             </h3>
             <AddItemForm addItem={addTaskForForm} itemTitle={"New Task Title"}/>
             <ul style={{"listStyle":"none", "padding":"0"}}>
-                {tasks.map((t) => {
+                {filteredTasks.map((t) => {
                     const onClickDeleteButtonHandler = () => {
-                        deleteTask(t.id, id)
+                        dispatch(deleteTaskAC(id,t.id))
                     }
                     const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        changeStatus(t.id, e.currentTarget.checked, id)
+                        dispatch(changeTaskStatusAC(t.id, e.currentTarget.checked, id))
                     }
                     const callBackChangeTaskTitle = (newTitle: string) => {
-                        changeTaskTitle(id, t.id, newTitle)
+                        dispatch(changeTaskTitleAC(id,t.id,newTitle))
                     }
 
                     return <li key={t.id} className={t.isDone ? "done" : ""}>
