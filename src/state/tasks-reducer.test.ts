@@ -1,12 +1,10 @@
 import {v1} from "uuid";
 import {TasksStateType} from "../App";
 import {
-    addEmptyTaskListAC,
-    addTaskAC,
+    addTaskAC, addTodoAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
-    deleteTaskAC,
-    deleteTodoAllTasksAC,
+    deleteTaskAC, deleteTodoAC,
     tasksReducer
 } from "./tasks-reducer";
 
@@ -79,7 +77,7 @@ test("change task status by todoId and taskId", () => {
 test("delete all tasks because todo was deleted", () => {
 
     const changedState = tasksReducer(initialState,
-        deleteTodoAllTasksAC(todolistsId2))
+        deleteTodoAC(todolistsId2))
 
     expect(changedState[todolistsId1].length).toBe(4);
     expect(changedState[todolistsId2]).toBeUndefined();
@@ -89,7 +87,7 @@ test("add empty task list", () => {
 
 const newTodoId=v1()
     const changedState = tasksReducer(initialState,
-       addEmptyTaskListAC(newTodoId))
+       addTodoAC(newTodoId,newTodoId))
 
     expect(Object.keys(changedState).length).toBe(3)
     expect(changedState[todolistsId1].length).toBe(4);

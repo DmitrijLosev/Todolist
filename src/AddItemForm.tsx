@@ -2,20 +2,21 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {IconButton, TextField} from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 
+
 type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
     itemTitle: string
 }
 
-export const AddItemForm: React.FC<AddItemFormPropsType> = ({addItem, itemTitle}) => {
-
+export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({addItem, itemTitle,}) => {
+    console.log("additemform")
     const [newTitle, setNewTitle] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value)
     }
     const onKeyPressInputHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        if(error) {setError(null)}
         if (e.key === "Enter") {
             addItemHandler()
         }
@@ -39,3 +40,4 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = ({addItem, itemTitle}
         </IconButton>
     </div>
 }
+)

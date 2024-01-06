@@ -7,8 +7,8 @@ export type TaskActionsType =
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof changeTaskStatusAC>
-    | ReturnType<typeof deleteTodoAllTasksAC>
-    | ReturnType<typeof addEmptyTaskListAC>
+    | ReturnType<typeof deleteTodoAC>
+    | ReturnType<typeof addTodoAC>
 
 export const todolistsId1=v1();
 export const  todolistsId2=v1();
@@ -37,11 +37,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: TaskA
             return {...state, [action.payload.todoId]: state[action.payload.todoId].map(t => t.id === action.payload.taskId ? {...t, title: action.payload.newTitle} : t)}
         case "CHANGE-TASK-STATUS" :
             return {...state, [action.payload.todoId]: state[action.payload.todoId].map(t => t.id === action.payload.idIsDone ? {...t, isDone: action.payload.isRealDone} : t)}
-        case "DELETE-TODO-ALL-TASKS" :
+        case "DELETE-TODOLIST" :
             const copyState={...state}
-            delete copyState[action.payload.id]
+            delete copyState[action.payload.todoId]
             return copyState
-        case "ADD-EMPTY-TASK-LIST" :
+        case "ADD-TODOLIST" :
             return {...state, [action.payload.newTodolistId]: []}
         default:
             return state
@@ -65,11 +65,8 @@ export const changeTaskStatusAC = (idIsDone: string, isRealDone: boolean, todoId
     type: "CHANGE-TASK-STATUS",
     payload: {idIsDone, isRealDone, todoId}
 }) as const;
-export const deleteTodoAllTasksAC = (id: string) => ({
-    type: "DELETE-TODO-ALL-TASKS",
-    payload: {id}
-}) as const;
-export const addEmptyTaskListAC = (newTodolistId:string) => ({
-    type: "ADD-EMPTY-TASK-LIST",
-    payload: {newTodolistId}
+export const deleteTodoAC = (todoId: string) => ({type: "DELETE-TODOLIST", payload: {todoId}}) as const
+export const addTodoAC = (todolistTitle: string,newTodolistId:string) => ({
+    type: "ADD-TODOLIST",
+    payload: {todolistTitle, newTodolistId}
 }) as const;
