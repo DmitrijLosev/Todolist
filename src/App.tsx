@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dispatch} from "redux";
 import {ActionsType, RootStateType} from "./state/store";
 
+
 export type TaskType = { id: string, title: string, isDone: boolean }
 export type TodolistType = { id: string, title: string, filter: FilterType }
 export type TasksStateType = {
@@ -21,7 +22,7 @@ function App() {
     console.log("app")
     const dispatch=useDispatch<Dispatch<ActionsType>>()
 
-    const todolistsState=useSelector<RootStateType,TodolistType[]>(state => state.todolists)
+    const todolistsState=useSelector<RootStateType,TodolistType[]>(state => state.todolists )
 
     const addTodo = useCallback(function(newTodoTitle: string) {
         const newTodolistId = v1()

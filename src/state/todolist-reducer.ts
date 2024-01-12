@@ -9,10 +9,7 @@ export type TodoActionsType =
     | ReturnType<typeof changeTodoTitleAC>
     | ReturnType<typeof changeTodoFilterAC>
 
-const initialState=[
-    {id: todolistsId1, title: "What to learn", filter: "all"},
-    {id: todolistsId2, title: "What to buy", filter: "all"}
-] as TodolistType[]
+const initialState=[] as TodolistType[]
 //REDUCER LOGIC
 export const todolistReducer = (state: TodolistType[] = initialState, action: TodoActionsType): TodolistType[] => {
     switch (action.type) {

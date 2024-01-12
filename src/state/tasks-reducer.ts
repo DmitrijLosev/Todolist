@@ -12,18 +12,7 @@ export type TaskActionsType =
 
 export const todolistsId1=v1();
 export const  todolistsId2=v1();
-const initialState={
-    [todolistsId1]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: false},
-        {id: v1(), title: "React", isDone: false},
-        {id: v1(), title: "Redux", isDone: false}],
-    [todolistsId2]: [
-        {id: v1(), title: "Beer", isDone: true},
-        {id: v1(), title: "Dry fish", isDone: false},
-        {id: v1(), title: "Chips", isDone: true}
-    ]
-} as TasksStateType
+const initialState={} as TasksStateType
 
 
 //REDUCER LOGIC
