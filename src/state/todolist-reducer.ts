@@ -1,6 +1,6 @@
-import {TodolistType} from "../App";
-import {FilterType} from "../TodoList";
-import {todolistsId1, todolistsId2} from "./tasks-reducer";
+import {TodolistType} from "../App/App";
+import {FilterType} from "../TodoList/TodoList";
+
 
 //TYPES
 export type TodoActionsType =

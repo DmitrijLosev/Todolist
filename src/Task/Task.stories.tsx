@@ -1,6 +1,6 @@
 import {Task} from "./Task";
 import {Provider} from "react-redux";
-import {RootStateType, store} from "./state/store";
+import {RootStateType, store} from "../state/store";
 import {action} from "@storybook/addon-actions";
 
 type StoreType=typeof store

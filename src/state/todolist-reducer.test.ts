@@ -1,7 +1,7 @@
 import {v1} from "uuid";
-import {TodolistType} from "../App";
+import {TodolistType} from "../App/App";
 import {addTodoAC, changeTodoFilterAC, changeTodoTitleAC, deleteTodoAC, todolistReducer} from "./todolist-reducer";
-import {FilterType} from "../TodoList";
+import {FilterType} from "../TodoList/TodoList";
 
 test("delete todo by id", () => {
     const todolistsId1 = v1();

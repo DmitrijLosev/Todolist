@@ -1,6 +1,6 @@
 
 import App from "./App";
-import {ReduxStoreProviderDecorator} from "./stories/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 
 
 

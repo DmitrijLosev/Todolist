@@ -1,14 +1,12 @@
-import React, {useCallback} from "react";
-import "./App.css";
-import {FilterType, TodoList} from "./TodoList";
-import {v1} from "uuid";
-import {AddItemForm} from "./AddItemForm";
+import React from "react";
+import "../App.css";
+import {FilterType, TodoList} from "../TodoList/TodoList";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {addTodoAC} from "./state/todolist-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {Dispatch} from "redux";
-import {ActionsType, RootStateType} from "./state/store";
+import {useSelector} from "react-redux";
+import {RootStateType} from "../state/store";
+import {useApp} from "./hooks/useApp";
 
 
 export type TaskType = { id: string, title: string, isDone: boolean }
@@ -19,15 +17,10 @@ export type TasksStateType = {
 
 
 function App() {
-    console.log("app")
-    const dispatch=useDispatch<Dispatch<ActionsType>>()
 
-    const todolistsState=useSelector<RootStateType,TodolistType[]>(state => state.todolists )
+    const todolistsState = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
 
-    const addTodo = useCallback(function(newTodoTitle: string) {
-        const newTodolistId = v1()
-        dispatch(addTodoAC(newTodoTitle,newTodolistId))
-    },[dispatch])
+    const {addTodo} = useApp()
 
     return (
         <div className="App">
@@ -49,10 +42,10 @@ function App() {
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container sx={{"padding": "20px"}} >
+                <Grid container sx={{"padding": "20px"}}>
                     <AddItemForm addItem={addTodo} itemTitle="New Todolist Title"/>
                 </Grid>
-                <Grid container spacing={3} >
+                <Grid container spacing={3}>
                     {todolistsState.map(tl => {
                         return <Grid item key={tl.id}>
                             <Paper elevation={3} sx={{"padding": "10px", "backgroundColor": "aliceblue"}}>

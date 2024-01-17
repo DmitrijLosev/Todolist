@@ -1,14 +1,11 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import UnpublishedRoundedIcon from "@mui/icons-material/UnpublishedRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC} from "./state/tasks-reducer";
-import {TaskType} from "./App";
-import {useDispatch} from "react-redux";
-import {ActionsType} from "./state/store";
-import {Dispatch} from "redux";
+import {TaskType} from "../App/App";
+import {useTask} from "./hooks/useTask";
 
 type TaskPropsType = {
     task: TaskType
@@ -16,16 +13,12 @@ type TaskPropsType = {
 }
 export const Task: React.FC<TaskPropsType> = React.memo(({task, todoId}) => {
 
-        const dispatch = useDispatch<Dispatch<ActionsType>>()
-        const onClickDeleteButtonHandler = () => {
-            dispatch(deleteTaskAC(todoId, task.id))
-        }
-        const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, todoId))
-        }
-        const callBackChangeTaskTitle = (newTitle: string) => {
-            dispatch(changeTaskTitleAC(todoId, task.id, newTitle))
-        }
+        const {
+            onChangeCheckBoxHandler,
+            callBackChangeTaskTitle,
+            onClickDeleteButtonHandler
+        } = useTask(task, todoId)
+
         return (
             <li className={task.isDone ? "done" : ""}>
                 <Checkbox
