@@ -2,10 +2,11 @@ import React from "react";
 import "../App.css"
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
-import {Button, ButtonGroup, IconButton} from "@mui/material";
+import { ButtonGroup, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {Task} from "../Task/Task";
 import {useTodoList} from "./hooks/useTodoList";
+import {SuperMUIButton} from "../SuperMUIButton/SuperMUIButton";
 
 
 export type FilterType = "all" | "active" | "completed"
@@ -58,18 +59,18 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({id, title, fil
                 <ButtonGroup
                     variant="contained"
                     aria-label="outlined primary button group">
-                    <Button onClick={onClickAllFilterButtonHandler}
-                            variant={filterValue === "all" ? "outlined" : "contained"}>
+                    <SuperMUIButton onClick={onClickAllFilterButtonHandler}
+                                    variant={filterValue === "all" ? "outlined" : "contained"}>
                         All
-                    </Button>
-                    <Button onClick={onClickActiveFilterButtonHandler}
-                            variant={filterValue === "active" ? "outlined" : "contained"}>
+                    </SuperMUIButton>
+                    <SuperMUIButton onClick={onClickActiveFilterButtonHandler}
+                                    variant={filterValue === "active" ? "outlined" : "contained"}>
                         Active
-                    </Button>
-                    <Button onClick={onClickCompletedFilterButtonHandler}
-                            variant={filterValue === "completed" ? "outlined" : "contained"}>
+                    </SuperMUIButton>
+                    <SuperMUIButton onClick={onClickCompletedFilterButtonHandler}
+                                    variant={filterValue === "completed" ? "outlined" : "contained"}>
                         Completed
-                    </Button>
+                    </SuperMUIButton>
 
                 </ButtonGroup>
             </div>

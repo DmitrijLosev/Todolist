@@ -10,8 +10,6 @@ export type TaskActionsType =
     | ReturnType<typeof deleteTodoAC>
     | ReturnType<typeof addTodoAC>
 
-export const todolistsId1=v1();
-export const  todolistsId2=v1();
 const initialState={} as TasksStateType
 
 
