@@ -1,12 +1,15 @@
 import {v1} from "uuid";
-import {TasksStateType} from "../App/App";
 import {
-    addTaskAC, addTodoAC,
+    addTaskAC,
+    addTodoAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
-    deleteTaskAC, deleteTodoAC,
-    tasksReducer
+    deleteTaskAC,
+    deleteTodoAC,
+    tasksReducer,
+    TasksStateType
 } from "./tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 
 let todolistsId1:string
 let todolistsId2:string
@@ -16,17 +19,69 @@ beforeEach(()=>{
      todolistsId2 = v1();
     initialState ={
         [todolistsId1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: false},
-            {id: v1(), title: "React", isDone: false},
-            {id: v1(), title: "Redux", isDone: false}],
+            {id: v1(),
+                title: "HTML&CSS",
+                status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId1,
+                order: 0,
+        addedDate:""},
+            {id: v1(), title: "JS", status:TaskStatuses.Completed,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId1,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "React", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId1,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "Redux", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId1,
+                order: 0,
+                addedDate:""}],
         [todolistsId2]: [
-            {id: v1(), title: "Beer", isDone: true},
-            {id: v1(), title: "Dry fish", isDone: false},
-            {id: v1(), title: "Chips", isDone: true}
+            {id: v1(), title: "Beer", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "Dry fish", status:TaskStatuses.Completed,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "Chips", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""}
         ]
     };
 })
+
 test("delete task by todoId and taskId", () => {
 
 
@@ -68,11 +123,11 @@ test("change task status by todoId and taskId", () => {
 
 
     const changedState = tasksReducer(initialState,
-        changeTaskStatusAC(initialState[todolistsId2][1].id,true,todolistsId2))
+        changeTaskStatusAC(initialState[todolistsId2][1].id,TaskStatuses.InProgress, todolistsId2))
 
-    expect(changedState[todolistsId2][0].isDone).toBeTruthy()
-    expect(changedState[todolistsId2][1].isDone).toBeTruthy()
-    expect(changedState[todolistsId2][2].isDone).toBeTruthy()
+    expect(changedState[todolistsId2][0].status).toBe(TaskStatuses.New)
+    expect(changedState[todolistsId2][1].status).toBe(TaskStatuses.InProgress)
+    expect(changedState[todolistsId2][2].status).toBe(TaskStatuses.New)
 })
 test("delete all tasks because todo was deleted", () => {
 

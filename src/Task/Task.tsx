@@ -4,8 +4,9 @@ import UnpublishedRoundedIcon from "@mui/icons-material/UnpublishedRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
-import {TaskType} from "../App/App";
 import {useTask} from "./hooks/useTask";
+import {TaskType} from "../state/tasks-reducer";
+import {TaskStatuses} from "../api/todolists-api";
 
 type TaskPropsType = {
     task: TaskType
@@ -20,15 +21,15 @@ export const Task: React.FC<TaskPropsType> = React.memo(({task, todoId}) => {
         } = useTask(task, todoId)
 
         return (
-            <li className={task.isDone ? "done" : ""}>
+            <li style={task.status === TaskStatuses.Completed || task.status === TaskStatuses.Draft ? {"opacity":"0.5"} : {}}>
                 <Checkbox
-                    checked={task.isDone}
+                    checked={task.status === TaskStatuses.Completed  || task.status === TaskStatuses.Draft }
                     onChange={onChangeCheckBoxHandler}
                     icon={< UnpublishedRoundedIcon/>}
                     checkedIcon={< TaskAltRoundedIcon/>}
                 />
                 <EditableSpan title={task.title}
-                              callback={callBackChangeTaskTitle}/>
+                              callback={callBackChangeTaskTitle} />
                 <IconButton onClick={onClickDeleteButtonHandler} size="small"
                 ><Delete/>
                 </IconButton>

@@ -1,3 +1,6 @@
+import {TodolistType} from "../state/todolist-reducer";
+import {TaskType} from "../state/tasks-reducer";
+
 const base_Url = "https://social-network.samuraijs.com/api/1.1" as const
 
 const settings = {
@@ -65,11 +68,19 @@ export const todolistsApi = {
 
 }
 
-export type TodolistType = {
-    id: string,
-    title: string,
-    addedDate: string,
-    order: number
+
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
 }
 export type ResponseType<D = {}> = {
     data: D,
@@ -82,24 +93,11 @@ export type TaskResponseType = {
     totalCount: number
     error: null | string
 }
-export type TaskType = {
-    description: string | null
-    title: string
-    completed: boolean
-    status: string | number
-    priority: number
-    startDate: string | null
-    deadline: string | null
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
+
 export type UpdateTaskModelType= {
     title: string
     description: string | null
-    completed: boolean
-    status: string | number
+    status: number
     priority: number
     startDate: string | null
     deadline: string | null

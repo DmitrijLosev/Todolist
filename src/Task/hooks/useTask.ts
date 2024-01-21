@@ -1,9 +1,10 @@
 import {useDispatch} from "react-redux";
 import {Dispatch} from "redux";
 import {ActionsType} from "../../state/store";
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC} from "../../state/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC, TaskType} from "../../state/tasks-reducer";
 import {ChangeEvent} from "react";
-import {TaskType} from "../../App/App";
+import {TaskStatuses} from "../../api/todolists-api";
+
 
 export const useTask = (task: TaskType, todoId: string) => {
     const dispatch = useDispatch<Dispatch<ActionsType>>()
@@ -11,7 +12,7 @@ export const useTask = (task: TaskType, todoId: string) => {
         dispatch(deleteTaskAC(todoId, task.id))
     }
     const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, todoId))
+        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New, todoId))
     }
     const callBackChangeTaskTitle = (newTitle: string) => {
         dispatch(changeTaskTitleAC(todoId, task.id, newTitle))

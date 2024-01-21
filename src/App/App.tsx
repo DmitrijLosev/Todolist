@@ -1,24 +1,18 @@
 import React from "react";
 import "../App.css";
-import {FilterType, TodoList} from "../TodoList/TodoList";
+import {TodoList} from "../TodoList/TodoList";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {RootStateType} from "../state/store";
 import {useApp} from "./hooks/useApp";
-
-
-export type TaskType = { id: string, title: string, isDone: boolean }
-export type TodolistType = { id: string, title: string, filter: FilterType }
-export type TasksStateType = {
-    [key: string]: TaskType[]
-}
+import {TodolistAppType} from "../state/todolist-reducer";
 
 
 function App() {
 
-    const todolistsState = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
+    const todolistsState = useSelector<RootStateType, TodolistAppType[]>(state => state.todolists)
 
     const {addTodo} = useApp()
 

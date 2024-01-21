@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
-import {TaskType, todolistsApi, UpdateTaskModelType} from "../api/todolists-api";
+import { todolistsApi, UpdateTaskModelType} from "../api/todolists-api";
+import {TaskType} from "../state/tasks-reducer";
 
 
 export default {
@@ -162,10 +163,9 @@ export const UpdateTaskPropertyByIdAndTodolistsId = () => {
             setTask(resData.items.filter(i => i.id === taskId)[0])
         })()
 
-        let startUpdateTaskModel = (({title, description, completed, status, priority, startDate, deadline}) => ({
+        let startUpdateTaskModel = (({title, description, status, priority, startDate, deadline}) => ({
             title,
             description,
-            completed,
             status,
             priority,
             startDate,

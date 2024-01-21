@@ -7,9 +7,10 @@ import {Delete} from "@mui/icons-material";
 import {Task} from "../Task/Task";
 import {useTodoList} from "./hooks/useTodoList";
 import {SuperMUIButton} from "../SuperMUIButton/SuperMUIButton";
+import {FilterType} from "../state/todolist-reducer";
 
 
-export type FilterType = "all" | "active" | "completed"
+
 
 export type TodoListPropsType = {
     id: string,
