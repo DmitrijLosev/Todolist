@@ -5,7 +5,7 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     deleteTaskAC,
-    deleteTodoAC,
+    deleteTodoAC, setTodolistsAC,
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
@@ -150,4 +150,19 @@ const newTodoId=v1()
     expect(changedState[newTodoId].length).toBe(0);
     expect(changedState[newTodoId]).not.toBeUndefined()
     expect(changedState[newTodoId]).toStrictEqual([])
+})
+
+test("add todolists with empty tasks in task state", () => {
+
+    const changedState = tasksReducer({},
+        setTodolistsAC([
+            {id: todolistsId1, title: "What to learn",addedDate: "",
+                order: 0},
+            {id: todolistsId2, title: "What to buy",addedDate: "",
+                order: 0}
+        ]))
+
+    expect(Object.keys(changedState)).toStrictEqual([todolistsId1,todolistsId2])
+    expect(Object.keys(changedState[todolistsId1]).length).toBe(0);
+    expect(Object.keys(changedState[todolistsId1]).length).toBe(0);
 })

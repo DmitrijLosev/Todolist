@@ -3,21 +3,26 @@ import {
     addTodoAC,
     changeTodoFilterAC,
     changeTodoTitleAC,
-    deleteTodoAC, FilterType, TodolistAppType,
+    deleteTodoAC, FilterType, setTodolistsAC, TodolistAppType,
     todolistReducer,
 } from "./todolist-reducer";
 
+let todolistsId1:string;
+let todolistsId2:string;
+let initialState: TodolistAppType[]
 
-test("delete todo by id", () => {
-    const todolistsId1 = v1();
-    const todolistsId2 = v1();
-    const initialState: TodolistAppType[] = [
+beforeEach(()=>{
+    todolistsId1 = v1();
+    todolistsId2 = v1();
+  initialState = [
         {id: todolistsId1, title: "What to learn", filter: "all",addedDate: "",
             order: 0},
         {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
             order: 0}
     ];
+})
 
+test("delete todo by id", () => {
     const changedState = todolistReducer(initialState,
         deleteTodoAC(todolistsId1))
 
@@ -25,14 +30,7 @@ test("delete todo by id", () => {
     expect(changedState[0].id).toBe(todolistsId2);
 })
 test("add new todolist", () => {
-    const todolistsId1 = v1();
-    const todolistsId2 = v1();
-    const initialState: TodolistAppType[] = [
-        {id: todolistsId1, title: "What to learn", filter: "all" ,addedDate: "",
-            order: 0},
-        {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
-            order: 0}
-    ];
+
     const newTodoId=v1()
 
     const changedState = todolistReducer(initialState,
@@ -45,14 +43,6 @@ test("add new todolist", () => {
 })
 
 test("change todolist title by id", () => {
-    const todolistsId1 = v1();
-    const todolistsId2 = v1();
-    const initialState: TodolistAppType[] = [
-        {id: todolistsId1, title: "What to learn", filter: "all",addedDate: "",
-            order: 0},
-        {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
-            order: 0}
-    ];
 
     const changedState = todolistReducer(initialState,
         changeTodoTitleAC(todolistsId1, "What to read"))
@@ -63,14 +53,7 @@ test("change todolist title by id", () => {
     expect(changedState[1].title).toBe("What to buy");
 })
 test("change todolist filter to completed", () => {
-    const todolistsId1 = v1();
-    const todolistsId2 = v1();
-    const initialState: TodolistAppType[] = [
-        {id: todolistsId1, title: "What to learn", filter: "all",addedDate: "",
-            order: 0},
-        {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
-            order: 0}
-    ];
+
     const newFilterValue: FilterType = "completed";
     const changedState = todolistReducer(initialState,
         changeTodoFilterAC(todolistsId2,newFilterValue))
@@ -78,4 +61,11 @@ test("change todolist filter to completed", () => {
     expect(changedState.length).toBe(2);
     expect(changedState[1].filter).toBe("completed");
     expect(changedState[0].filter).toBe("all");
+})
+test("set todolists to state", () => {
+
+    const changedState = todolistReducer([],
+        setTodolistsAC(initialState))
+
+    expect(changedState.length).toBe(2);
 })

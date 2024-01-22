@@ -1,6 +1,6 @@
 import {Task} from "./Task";
 import {Provider} from "react-redux";
-import {RootStateType, store} from "../state/store";
+import {store} from "../state/store";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
@@ -13,8 +13,8 @@ export default {
 const callback=action("dispatch")
 export const DoneAndNoDoneTasksExample = () =>{
     let store={
-        getState:function (){return {} as RootStateType},
-        dispatch:function (A) {
+        getState:function (){return {} as any},
+        dispatch:function (A:any) {
             return callback(A.payload)
         },
         subscribe:function (callbackListener){}
