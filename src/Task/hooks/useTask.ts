@@ -1,21 +1,27 @@
 import {useDispatch} from "react-redux";
-import {Dispatch} from "redux";
-import {ActionsType} from "../../state/store";
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC, TaskType} from "../../state/tasks-reducer";
+import {ActionsType, RootStateType} from "../../state/store";
+import {
+    changeTaskPropertyTC,
+    deleteTaskTC,
+    TaskType
+} from "../../state/tasks-reducer";
 import {ChangeEvent} from "react";
 import {TaskStatuses} from "../../api/todolists-api";
+import {ThunkDispatch} from "redux-thunk";
 
 
 export const useTask = (task: TaskType, todoId: string) => {
-    const dispatch = useDispatch<Dispatch<ActionsType>>()
+    const dispatch = useDispatch<ThunkDispatch<RootStateType,unknown,ActionsType>>()
     const onClickDeleteButtonHandler = () => {
-        dispatch(deleteTaskAC(todoId, task.id))
+        dispatch(deleteTaskTC(todoId, task.id))
     }
     const onChangeCheckBoxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New, todoId))
+        dispatch(changeTaskPropertyTC(task.id,
+            todoId,
+            {status:e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New}))
     }
     const callBackChangeTaskTitle = (newTitle: string) => {
-        dispatch(changeTaskTitleAC(todoId, task.id, newTitle))
+        dispatch(changeTaskPropertyTC(task.id, todoId, {title:newTitle}))
     }
     return {
         onChangeCheckBoxHandler,

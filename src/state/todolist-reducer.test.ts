@@ -31,13 +31,12 @@ test("delete todo by id", () => {
 })
 test("add new todolist", () => {
 
-    const newTodoId=v1()
-
     const changedState = todolistReducer(initialState,
-        addTodoAC("What to read",newTodoId))
+        addTodoAC( {id: "3", title: "What to do",addedDate: "",
+            order: 0}))
 
     expect(changedState.length).toBe(3);
-    expect(changedState[0].title).toBe("What to read");
+    expect(changedState[0].title).toBe("What to do");
     expect(changedState[0].filter).toBe("all");
     expect(changedState[0].id).not.toBe(todolistsId1 || todolistsId2);
 })

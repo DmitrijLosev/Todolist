@@ -1,11 +1,9 @@
 import {v1} from "uuid";
 import {
     addTaskAC,
-    addTodoAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
+    addTodoAC, changeTaskPropertyAC,
     deleteTaskAC,
-    deleteTodoAC, setTodolistsAC,
+    deleteTodoAC, setTasksAC, setTodolistsAC,
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
@@ -99,35 +97,40 @@ test("add new task", () => {
 
 
     const changedState = tasksReducer(initialState,
-        addTaskAC("Typescript",todolistsId1))
+        addTaskAC({id: v1(), title: "Apple", status:TaskStatuses.New,
+            description:"",
+            priority: TaskPriorities.Low,
+            startDate:null,
+            deadline: null,
+            todoListId:todolistsId2,
+            order: 0,
+            addedDate:""}))
 
-    expect(changedState[todolistsId1].length).toBe(5);
-    expect(changedState[todolistsId2].length).toBe(3);
-    expect(changedState[todolistsId1][0].title).toBe("Typescript");
-    expect(changedState[todolistsId1][1].title).toBe("HTML&CSS");
+    expect(changedState[todolistsId1].length).toBe(4);
+    expect(changedState[todolistsId2].length).toBe(4);
+    expect(changedState[todolistsId2][0].title).toBe("Apple");
+    expect(changedState[todolistsId2][1].title).toBe("Beer");
 })
 
-test("change task title by todoId and taskId", () => {
+test("change task title", () => {
 
 
     const changedState = tasksReducer(initialState,
-        changeTaskTitleAC(todolistsId2,initialState[todolistsId2][1].id,"Nuts"))
+        changeTaskPropertyAC({...initialState[todolistsId2][2],title: "Meat"} ))
 
     expect(changedState[todolistsId1].length).toBe(4);
     expect(changedState[todolistsId2].length).toBe(3);
     expect(changedState[todolistsId2][0].title).toBe("Beer");
-    expect(changedState[todolistsId2][1].title).toBe("Nuts");
-    expect(changedState[todolistsId2][2].title).toBe("Chips");
+    expect(changedState[todolistsId2][1].title).toBe("Dry fish");
+    expect(changedState[todolistsId2][2].title).toBe("Meat");
 })
 test("change task status by todoId and taskId", () => {
 
-
     const changedState = tasksReducer(initialState,
-        changeTaskStatusAC(initialState[todolistsId2][1].id,TaskStatuses.InProgress, todolistsId2))
+        changeTaskPropertyAC( {...initialState[todolistsId1][0],status:TaskStatuses.Completed}))
 
+    expect(changedState[todolistsId1][0].status).toBe(TaskStatuses.Completed)
     expect(changedState[todolistsId2][0].status).toBe(TaskStatuses.New)
-    expect(changedState[todolistsId2][1].status).toBe(TaskStatuses.InProgress)
-    expect(changedState[todolistsId2][2].status).toBe(TaskStatuses.New)
 })
 test("delete all tasks because todo was deleted", () => {
 
@@ -140,16 +143,14 @@ test("delete all tasks because todo was deleted", () => {
 })
 test("add empty task list", () => {
 
-const newTodoId=v1()
-    const changedState = tasksReducer(initialState,
-       addTodoAC(newTodoId,newTodoId))
 
-    expect(Object.keys(changedState).length).toBe(3)
-    expect(changedState[todolistsId1].length).toBe(4);
-    expect(changedState[todolistsId2].length).toBe(3);
-    expect(changedState[newTodoId].length).toBe(0);
-    expect(changedState[newTodoId]).not.toBeUndefined()
-    expect(changedState[newTodoId]).toStrictEqual([])
+    const changedState = tasksReducer({},
+       addTodoAC({id: todolistsId1, title: "What to learn",addedDate: "",
+           order: 0}))
+
+    expect(Object.keys(changedState).length).toBe(1)
+    expect(changedState[todolistsId1].length).toBe(0);
+
 })
 
 test("add todolists with empty tasks in task state", () => {
@@ -165,4 +166,39 @@ test("add todolists with empty tasks in task state", () => {
     expect(Object.keys(changedState)).toStrictEqual([todolistsId1,todolistsId2])
     expect(Object.keys(changedState[todolistsId1]).length).toBe(0);
     expect(Object.keys(changedState[todolistsId1]).length).toBe(0);
+})
+
+test("set tasks by todo id", () => {
+
+    const changedState = tasksReducer({["1"]:[],["2"]:[]},
+        setTasksAC("2", [
+            {id: v1(), title: "Beer", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "Dry fish", status:TaskStatuses.Completed,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""},
+            {id: v1(), title: "Chips", status:TaskStatuses.New,
+                description:"",
+                priority: TaskPriorities.Low,
+                startDate:null,
+                deadline: null,
+                todoListId:todolistsId2,
+                order: 0,
+                addedDate:""}
+        ]))
+
+    expect(changedState["1"].length).toBe(0)
+    expect(changedState["2"].length).toBe(3)
+    expect(changedState["2"].every(t=>t.title!=="")).toBeTruthy();
 })

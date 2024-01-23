@@ -34,7 +34,7 @@ export const todolistsApi = {
             method: "DELETE"
         }))
     },
-    updateTodlistTitle(todolistId: string, title: string): Promise<ResponseType> {
+    updateTodolistTitle(todolistId: string, title: string): Promise<ResponseType> {
         return getResponse(fetch(`${base_Url}/todo-lists/${todolistId}`, {
             ...settings,
             method: "PUT",

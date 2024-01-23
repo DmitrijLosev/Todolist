@@ -1,18 +1,24 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Dispatch} from "redux";
 import {ActionsType, RootStateType} from "../../state/store";
-import {changeTodoFilterAC, changeTodoTitleAC, deleteTodoAC, FilterType} from "../../state/todolist-reducer";
-import {useCallback} from "react";
-import {addTaskAC, TaskType} from "../../state/tasks-reducer";
+import {
+    changeTodoFilterAC, ChangeTodolistTitleTC,
+    deleteTodolistTC,
+    FilterType
+} from "../../state/todolist-reducer";
+import {useCallback, useEffect} from "react";
+import {addTaskTC, fetchTasksTC, TaskType} from "../../state/tasks-reducer";
 import {TaskStatuses} from "../../api/todolists-api";
+import {ThunkDispatch} from "redux-thunk";
 
 
 export const useTodoList = (id:string,
                             filterValue:FilterType) => {
     const taskState = useSelector<RootStateType, TaskType[]>(state => state.tasks[id])
 
-    const dispatch = useDispatch<Dispatch<ActionsType>>()
-
+    const dispatch = useDispatch<ThunkDispatch<RootStateType,unknown,ActionsType>>()
+useEffect(()=>{
+    dispatch(fetchTasksTC(id))
+},[])
 
     let filteredTasks = taskState;
     if (filterValue === "active") {
@@ -23,14 +29,13 @@ export const useTodoList = (id:string,
     }
 
     const removeTodo = () => {
-        dispatch(deleteTodoAC(id))
+        dispatch(deleteTodolistTC(id))
     }
-
     const addTaskForForm = useCallback((title: string) => {
-        dispatch(addTaskAC(title, id))
+        dispatch(addTaskTC(title, id))
     }, [dispatch, id])
     const callBackChangeTodoTitle = useCallback((newTitle: string) => {
-        dispatch(changeTodoTitleAC(id, newTitle))
+        dispatch(ChangeTodolistTitleTC(id, newTitle))
     }, [dispatch, id])
 
 

@@ -1,7 +1,7 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
+import {Action, applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {TodoActionsType, todolistReducer} from "./todolist-reducer";
 import {TaskActionsType, tasksReducer} from "./tasks-reducer";
-import {thunk} from "redux-thunk";
+import {thunk, ThunkAction} from "redux-thunk";
 
 
 
@@ -18,3 +18,4 @@ window.store=store;
 
 export type RootStateType=ReturnType<typeof rootReducer>
 export type ActionsType=TodoActionsType | TaskActionsType
+export type ThunkCommonType<A extends Action>= ThunkAction<void, RootStateType, unknown, A>

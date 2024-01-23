@@ -69,7 +69,7 @@ export const UpdateTodolistTitle = () => {
     const updateTodoTitle = async () => {
         let res1 = await todolistsApi.getTodolists()
         console.log("until update TodoTitle", res1.filter(t => t.id === todoId)[0])
-        let resData = await todolistsApi.updateTodlistTitle(todoId, todoTitle)
+        let resData = await todolistsApi.updateTodolistTitle(todoId, todoTitle)
         setState(resData)
         let res2 = await todolistsApi.getTodolists()
         console.log("after update TodoTitle", res2.filter(t => t.id === todoId)[0])
