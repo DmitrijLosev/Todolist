@@ -1,13 +1,13 @@
 import React from "react";
 import "../App.css";
-import {TodoList} from "../TodoList/TodoList";
-import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {TodoList} from "../features/TodoList/TodoList";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {RootStateType} from "../state/store";
 import {useApp} from "./hooks/useApp";
 import {TodolistAppType} from "../state/todolist-reducer";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 
 
 function App() {

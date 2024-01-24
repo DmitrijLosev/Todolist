@@ -2,11 +2,11 @@ import React from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import UnpublishedRoundedIcon from "@mui/icons-material/UnpublishedRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {useTask} from "./hooks/useTask";
-import {TaskType} from "../state/tasks-reducer";
-import {TaskStatuses} from "../api/todolists-api";
+import {TaskType} from "../../../state/tasks-reducer";
+import {TaskStatuses} from "../../../api/todolists-api";
 
 type TaskPropsType = {
     task: TaskType

@@ -1,13 +1,13 @@
 import {v1} from "uuid";
 import {
-    addTaskAC,
-    addTodoAC, changeTaskPropertyAC,
+    addTaskAC, changeTaskPropertyAC,
     deleteTaskAC,
-    deleteTodoAC, setTasksAC, setTodolistsAC,
+    setTasksAC,
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+import {addTodoAC, deleteTodoAC, setTodolistsAC} from "./todolist-reducer";
 
 let todolistsId1:string
 let todolistsId2:string

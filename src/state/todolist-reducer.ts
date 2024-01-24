@@ -42,21 +42,6 @@ export const setTodolistsAC = (todolists: TodolistType[]) => ({
 }) as const;
 
 
-export type FilterType = "all" | "active" | "completed"
-export type TodolistType = {
-    id: string,
-    title: string,
-    addedDate: string,
-    order: number
-}
-export type TodolistAppType = TodolistType & {filter:FilterType}
-export type TodoActionsType =
-    ReturnType<typeof deleteTodoAC>
-    | ReturnType<typeof addTodoAC>
-    | ReturnType<typeof changeTodoTitleAC>
-    | ReturnType<typeof changeTodoFilterAC>
-    | ReturnType<typeof setTodolistsAC>
-
 export const fetchTodolistsTC = ():ThunkCommonType<TodoActionsType> => async (dispatch:ThunkDispatch<RootStateType,unknown,TodoActionsType>)=>{
    let data= await todolistsApi.getTodolists()
     dispatch(setTodolistsAC(data))
@@ -80,3 +65,22 @@ export const ChangeTodolistTitleTC = (todolistId:string,newTitle:string):ThunkCo
         dispatch(changeTodoTitleAC(todolistId,newTitle))
     }
 }
+
+export type FilterType = "all" | "active" | "completed"
+export type TodolistType = {
+    id: string,
+    title: string,
+    addedDate: string,
+    order: number
+}
+export type TodolistAppType = TodolistType & {filter:FilterType}
+export type TodoActionsType =
+    DeleteTodoACType
+    | AddTodoACType
+    | ReturnType<typeof changeTodoTitleAC>
+    | ReturnType<typeof changeTodoFilterAC>
+    |  SetTodolistsACType
+
+export type AddTodoACType = ReturnType<typeof addTodoAC>
+export type DeleteTodoACType = ReturnType<typeof deleteTodoAC>
+export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>

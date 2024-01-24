@@ -1,12 +1,12 @@
 import {useDispatch} from "react-redux";
-import {ActionsType, RootStateType} from "../../state/store";
+import {ActionsType, RootStateType} from "../../../../state/store";
 import {
     changeTaskPropertyTC,
     deleteTaskTC,
     TaskType
-} from "../../state/tasks-reducer";
+} from "../../../../state/tasks-reducer";
 import {ChangeEvent} from "react";
-import {TaskStatuses} from "../../api/todolists-api";
+import {TaskStatuses} from "../../../../api/todolists-api";
 import {ThunkDispatch} from "redux-thunk";
 
 

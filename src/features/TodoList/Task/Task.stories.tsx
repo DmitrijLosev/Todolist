@@ -1,9 +1,9 @@
 import {Task} from "./Task";
 import {Provider} from "react-redux";
-import {store} from "../state/store";
+import {store} from "../../../state/store";
 import {action} from "@storybook/addon-actions";
-import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
-import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+import {ReduxStoreProviderDecorator} from "../../../stories/ReduxStoreProviderDecorator";
+import {TaskPriorities, TaskStatuses} from "../../../api/todolists-api";
 
 type StoreType=typeof store
 export default {

@@ -1,7 +1,7 @@
 import {TaskPriorities, TaskStatuses, todolistsApi} from "../api/todolists-api";
-import {TodolistType} from "./todolist-reducer";
 import {RootStateType, ThunkCommonType} from "./store";
 import {ThunkDispatch} from "redux-thunk";
+import {addTodoAC, deleteTodoAC, setTodolistsAC} from "./todolist-reducer";
 
 
 const initialState = {} as TasksStateType
@@ -53,19 +53,12 @@ export const changeTaskPropertyAC = (task: TaskType) => ({
     type: "CHANGE-TASK-PROPERTY",
     payload: {task}
 }) as const;
-export const deleteTodoAC = (todoId: string) => ({type: "DELETE-TODOLIST", payload: {todoId}}) as const
-export const addTodoAC = (todolist: TodolistType) => ({
-    type: "ADD-TODOLIST",
-    payload: {todolist}
-}) as const;
-export const setTodolistsAC = (todolists: TodolistType[]) => ({
-    type: "SET-TODOLISTS",
-    payload: {todolists}
-}) as const;
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) => ({
     type: "SET-TASKS",
     payload: {todolistId, tasks}
 }) as const;
+
+
 
 export const fetchTasksTC = (todolistId: string): ThunkCommonType<TaskActionsType> =>
     async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>) => {
@@ -80,6 +73,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string): ThunkCommonTyp
             dispatch(deleteTaskAC(todolistId, taskId))
         }
     }
+
 export const addTaskTC = (taskTitle: string, todolistId: string): ThunkCommonType<TaskActionsType> =>
     async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>) => {
         let res = await todolistsApi.createTask(taskTitle, todolistId)
@@ -116,7 +110,6 @@ export type TaskType = {
 export type TasksStateType = {
     [key: string]: TaskType[]
 }
-
 export type TaskActionsType =
     ReturnType<typeof deleteTaskAC>
     | ReturnType<typeof addTaskAC>

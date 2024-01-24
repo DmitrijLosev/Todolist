@@ -1,13 +1,12 @@
 import React from "react";
-import "../App.css"
-import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import {EditableSpan} from "../../components/EditableSpan/EditableSpan";
 import { ButtonGroup, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {Task} from "../Task/Task";
+import {Task} from "./Task/Task";
 import {useTodoList} from "./hooks/useTodoList";
-import {SuperMUIButton} from "../SuperMUIButton/SuperMUIButton";
-import {FilterType} from "../state/todolist-reducer";
+import {SuperMUIButton} from "../../components/SuperMUIButton/SuperMUIButton";
+import {FilterType} from "../../state/todolist-reducer";
 
 
 

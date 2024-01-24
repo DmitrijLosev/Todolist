@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
-import {ActionsType, RootStateType} from "../../state/store";
+import {ActionsType, RootStateType} from "../../../state/store";
 import {
     changeTodoFilterAC, ChangeTodolistTitleTC,
     deleteTodolistTC,
     FilterType
-} from "../../state/todolist-reducer";
+} from "../../../state/todolist-reducer";
 import {useCallback, useEffect} from "react";
-import {addTaskTC, fetchTasksTC, TaskType} from "../../state/tasks-reducer";
-import {TaskStatuses} from "../../api/todolists-api";
+import {addTaskTC, fetchTasksTC, TaskType} from "../../../state/tasks-reducer";
+import {TaskStatuses} from "../../../api/todolists-api";
 import {ThunkDispatch} from "redux-thunk";
 
 
