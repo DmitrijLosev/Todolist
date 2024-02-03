@@ -8,5 +8,8 @@ const callback = action("Button add was pressed")
 export const AddItemFormExample = () => {
     return <AddItemForm addItem={(newTitle)=> {callback(newTitle) }} itemTitle={"Form for..."}/>
 }
+export const AddItemFormDisabledExample = () => {
+    return <AddItemForm addItem={(newTitle)=> {callback(newTitle) }} itemTitle={"Form for..."} disable/>
+}
 
 

@@ -7,8 +7,9 @@ import {useAddItemForm} from "./useAddItemForm/useAddItemForm";
 type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
     itemTitle: string
+    disable?:boolean
 }
-export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({addItem, itemTitle,}) => {
+export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({addItem, itemTitle,disable=false}) => {
 
         const {
             newTitle,
@@ -21,9 +22,9 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(({addItem,
         return <div>
             <TextField value={newTitle} onChange={onChangeInputHandler} onKeyDown={onKeyPressInputHandler}
                        className={error ? "error" : ""} id="standard-basic" label={itemTitle} variant="standard"
-                       sx={{"vertical-align": "unset"}} error={!!error} helperText={error}/>
+                       sx={{"vertical-align": "unset"}} error={!!error} helperText={error} disabled={disable}/>
             <IconButton onClick={addItemHandler}
-                        color="primary">
+                        color="primary" disabled={disable}>
                 <AddBoxRoundedIcon/>
             </IconButton>
         </div>

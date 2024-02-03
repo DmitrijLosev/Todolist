@@ -15,7 +15,8 @@ const settings = {
 
 const getResponse = async (response: Promise<Response>) => {
     let res = await response;
-    return res.json()
+   if(res.status>=400){throw new Error((await res.json()).message + "status: "+res.status) }
+        return res.json()
 }
 export const todolistsApi = {
     getTodolists(): Promise<TodolistType[]> {

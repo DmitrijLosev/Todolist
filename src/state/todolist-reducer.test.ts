@@ -3,7 +3,7 @@ import {
     addTodoAC,
     changeTodoFilterAC,
     changeTodoTitleAC,
-    deleteTodoAC, FilterType, setTodolistsAC, TodolistAppType,
+    deleteTodoAC, FilterType, setTodolistEntityStatus, setTodolistsAC, TodolistAppType,
     todolistReducer,
 } from "./todolist-reducer";
 
@@ -16,9 +16,9 @@ beforeEach(()=>{
     todolistsId2 = v1();
   initialState = [
         {id: todolistsId1, title: "What to learn", filter: "all",addedDate: "",
-            order: 0},
+            order: 0,entityStatus:"idle"},
         {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
-            order: 0}
+            order: 0,entityStatus:"idle"}
     ];
 })
 
@@ -67,4 +67,13 @@ test("set todolists to state", () => {
         setTodolistsAC(initialState))
 
     expect(changedState.length).toBe(2);
+})
+
+test("set todolist entity status", () => {
+
+    const changedState = todolistReducer(initialState,
+        setTodolistEntityStatus(todolistsId2,"loading"))
+
+    expect(changedState[0].entityStatus).toBe("idle");
+    expect(changedState[1].entityStatus).toBe("loading");
 })

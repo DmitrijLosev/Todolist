@@ -6,19 +6,16 @@ import {Delete} from "@mui/icons-material";
 import {Task} from "./Task/Task";
 import {useTodoList} from "./hooks/useTodoList";
 import {SuperMUIButton} from "../../components/SuperMUIButton/SuperMUIButton";
-import {FilterType} from "../../state/todolist-reducer";
+import {TodolistAppType} from "../../state/todolist-reducer";
+
 
 
 
 
 export type TodoListPropsType = {
-    id: string,
-    title: string,
-    filterValue: FilterType
+   todolist:TodolistAppType
 }
-export const TodoList: React.FC<TodoListPropsType> = React.memo(({id, title, filterValue}) => {
-
-
+export const TodoList: React.FC<TodoListPropsType> = React.memo(({todolist}) => {
         const {
             callBackChangeTodoTitle,
             removeTodo,
@@ -27,24 +24,26 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({id, title, fil
             onClickAllFilterButtonHandler,
             onClickActiveFilterButtonHandler,
             onClickCompletedFilterButtonHandler
-        } = useTodoList(id, filterValue)
+        } = useTodoList(todolist)
 
 
         return (
             <div className="todolist">
                 <h3>
                     <EditableSpan
-                        title={title} callback={callBackChangeTodoTitle}/>
+                        title={todolist.title} callback={callBackChangeTodoTitle} entityStatus={todolist.entityStatus}/>
                     <IconButton
                         onClick={removeTodo}
                         size="large"
+                        disabled = {todolist.entityStatus==="loading"}
                     >
                         <Delete/>
                     </IconButton>
                 </h3>
                 <AddItemForm
                     addItem={addTaskForForm}
-                    itemTitle={"New Task Title"}/>
+                    itemTitle={"New Task Title"}
+                disable = {todolist.entityStatus==="loading"}/>
 
                 <ul style={{"listStyle": "none", "padding": "0"}}>
                     {filteredTasks.map((t) => {
@@ -52,7 +51,7 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({id, title, fil
                         return <Task
                             key={t.id}
                             task={t}
-                            todoId={id}/>
+                            todoId={todolist.id}/>
                     })}
                 </ul>
 
@@ -60,15 +59,15 @@ export const TodoList: React.FC<TodoListPropsType> = React.memo(({id, title, fil
                     variant="contained"
                     aria-label="outlined primary button group">
                     <SuperMUIButton onClick={onClickAllFilterButtonHandler}
-                                    variant={filterValue === "all" ? "outlined" : "contained"}>
+                                    variant={todolist.filter === "all" ? "outlined" : "contained"}>
                         All
                     </SuperMUIButton>
                     <SuperMUIButton onClick={onClickActiveFilterButtonHandler}
-                                    variant={filterValue === "active" ? "outlined" : "contained"}>
+                                    variant={todolist.filter === "active" ? "outlined" : "contained"}>
                         Active
                     </SuperMUIButton>
                     <SuperMUIButton onClick={onClickCompletedFilterButtonHandler}
-                                    variant={filterValue === "completed" ? "outlined" : "contained"}>
+                                    variant={todolist.filter === "completed" ? "outlined" : "contained"}>
                         Completed
                     </SuperMUIButton>
 

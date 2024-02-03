@@ -1,25 +1,34 @@
 import React from "react";
 import "../App.css";
 import {TodoList} from "../features/TodoList/TodoList";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import Box from '@mui/material/Box';
 import {Menu} from "@mui/icons-material";
-import {useSelector} from "react-redux";
-import {RootStateType} from "../state/store";
 import {useApp} from "./hooks/useApp";
-import {TodolistAppType} from "../state/todolist-reducer";
 import {AddItemForm} from "../components/AddItemForm/AddItemForm";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
 
-function App() {
+type AppPropsType = { demo?: true }
+export const App: React.FC<AppPropsType> = React.memo(({demo = false}) => {
 
-    const todolistsState = useSelector<RootStateType, TodolistAppType[]>(state => state.todolists)
-
-    const {addTodo} = useApp()
+    const {addTodo, status, todolistsState} = useApp(demo)
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar >
                     <IconButton
                         size="large"
                         edge="start"
@@ -28,12 +37,20 @@ function App() {
                         sx={{mr: 2}}
                     >
                         <Menu/>
-                    </IconButton>
+                    </IconButton >
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" sx={{"position": "relative"}}>Login</Button>
                 </Toolbar>
+                {status === "loading" && <Box sx={{
+                    "position": "absolute",
+                    "display": "inline-block",
+                    "width": "100%",
+                    "top": "56px"
+                }}>
+                    <LinearProgress sx={{"height":"8px"}} />
+                </Box>}
             </AppBar>
             <Container fixed>
                 <Grid container sx={{"padding": "20px"}}>
@@ -43,9 +60,7 @@ function App() {
                     {todolistsState.map(tl => {
                         return <Grid item key={tl.id}>
                             <Paper elevation={3} sx={{"padding": "10px", "backgroundColor": "aliceblue"}}>
-                                <TodoList key={tl.id} id={tl.id} title={tl.title}
-                                          filterValue={tl.filter}
-                                />
+                                <TodoList todolist={tl}/>
                             </Paper>
                         </Grid>
                     })}
@@ -55,6 +70,6 @@ function App() {
         </div>
     );
 }
+)
 
-export default App;
 

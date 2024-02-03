@@ -1,5 +1,4 @@
-
-import App from "./App";
+import {App} from "./App";
 import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 
 
@@ -12,5 +11,5 @@ export default {
 
 export const AppWithReduxExample = () =>{
 
-    return <App/>
+    return <App demo={true}/>
 }

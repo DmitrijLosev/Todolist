@@ -5,14 +5,16 @@ import {todolistReducer} from "../state/todolist-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 import {thunk} from "redux-thunk";
+import {appReducer} from "../state/app-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistReducer
+    todolists: todolistReducer,
+    app:appReducer
 })
 const todolistsId1=v1();
 const todolistsId2 =v1();
-const initialAppState= {
+const initialAppState:RootStateType= {
     tasks: {
         [todolistsId1]: [
             {id: v1(),
@@ -78,15 +80,19 @@ const initialAppState= {
     },
     todolists: [
         {id: todolistsId1, title: "What to learn", filter: "all",addedDate: "",
-            order: 0},
+            order: 0, entityStatus:"idle"},
         {id: todolistsId2, title: "What to buy", filter: "all",addedDate: "",
-            order: 0}
-    ]
+            order: 0, entityStatus:"idle"}
+    ],
+    app:{
+        status:"idle",
+        error:null
+    }
 }
 
 export type RootStateType=ReturnType<typeof rootReducer>
 
-const storyBookStore = legacy_createStore(rootReducer, undefined,
+const storyBookStore = legacy_createStore(rootReducer, initialAppState as RootStateType & undefined,
     applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {

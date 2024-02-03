@@ -1,7 +1,8 @@
 import {ChangeEvent, useState} from "react";
+import {RequestStatusType} from "../../../state/app-reducer";
 
 export const useEditableSpan = (callback: (newTitle: string) => void,
-                                title: string) => {
+                                title: string,entityStatus?:RequestStatusType) => {
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const [inputValue, setInputValue] = useState<string>("")
@@ -21,8 +22,10 @@ export const useEditableSpan = (callback: (newTitle: string) => void,
 
     }
     const spanOnDoubleClickHandler = () => {
-        setEditMode(true)
-        setInputValue(title)
+        if (entityStatus !== "loading"){
+            setEditMode(true)
+            setInputValue(title)
+        }
     }
 
     return {editMode,
