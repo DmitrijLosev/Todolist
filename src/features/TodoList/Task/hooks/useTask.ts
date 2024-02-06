@@ -1,5 +1,3 @@
-import {useDispatch} from "react-redux";
-import {ActionsType, RootStateType} from "../../../../state/store";
 import {
     changeTaskPropertyTC,
     deleteTaskTC,
@@ -7,11 +5,11 @@ import {
 } from "../../../../state/tasks-reducer";
 import {ChangeEvent} from "react";
 import {TaskStatuses} from "../../../../api/todolists-api";
-import {ThunkDispatch} from "redux-thunk";
+import {useAppDispatch} from "../../../../state/hooks";
 
 
 export const useTask = (task: TaskType, todoId: string) => {
-    const dispatch = useDispatch<ThunkDispatch<RootStateType,unknown,ActionsType>>()
+    const dispatch = useAppDispatch()
     const onClickDeleteButtonHandler = () => {
         dispatch(deleteTaskTC(todoId, task.id))
     }

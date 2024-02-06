@@ -1,7 +1,7 @@
 import React from "react";
 import {IconButton, TextField} from "@mui/material";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import {useAddItemForm} from "./useAddItemForm/useAddItemForm";
+import {useAddItemForm} from "./hooks/useAddItemForm";
 
 
 type AddItemFormPropsType = {

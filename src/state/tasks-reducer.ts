@@ -1,6 +1,5 @@
 import {TaskPriorities, TaskStatuses, todolistsApi} from "../api/todolists-api";
-import {RootStateType, ThunkCommonType} from "./store";
-import {ThunkDispatch} from "redux-thunk";
+import {ThunkCommonType} from "./store";
 import {
     addTodoAC,
     deleteTodoAC,
@@ -8,7 +7,7 @@ import {
     SetTodolistEntityStatusType,
     setTodolistsAC
 } from "./todolist-reducer";
-import {SetErrorActionType, setAppStatusAC, SetStatusActionType} from "./app-reducer";
+import {setAppStatusAC, AppActionsType} from "./app-reducer";
 import {handleAppError, handleServerNetworkError} from "../utils/error-utils";
 
 
@@ -67,8 +66,8 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => ({
 }) as const;
 
 
-export const fetchTasksTC = (todolistId: string): ThunkCommonType<TaskActionsType> =>
-    async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>) => {
+export const fetchTasksTC = (todolistId: string): ThunkCommonType =>
+    async dispatch => {
         try {
             let data = await todolistsApi.getTasks(todolistId)
             dispatch(setTasksAC(todolistId, data.items))
@@ -77,8 +76,8 @@ export const fetchTasksTC = (todolistId: string): ThunkCommonType<TaskActionsTyp
         }
     }
 
-export const deleteTaskTC = (todolistId: string, taskId: string): ThunkCommonType<TaskActionsType> =>
-    async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>) => {
+export const deleteTaskTC = (todolistId: string, taskId: string): ThunkCommonType =>
+    async dispatch => {
         try {
             dispatch(setAppStatusAC("loading"))
             let res = await todolistsApi.deleteTask(todolistId, taskId)
@@ -93,8 +92,8 @@ export const deleteTaskTC = (todolistId: string, taskId: string): ThunkCommonTyp
         }
     }
 
-export const addTaskTC = (taskTitle: string, todolistId: string): ThunkCommonType<TaskActionsType> =>
-    async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>) => {
+export const addTaskTC = (taskTitle: string, todolistId: string): ThunkCommonType =>
+    async dispatch => {
         try {
             dispatch(setAppStatusAC("loading"))
             dispatch(setTodolistEntityStatus( todolistId,"loading"))
@@ -113,8 +112,8 @@ export const addTaskTC = (taskTitle: string, todolistId: string): ThunkCommonTyp
         }
     }
 
-export const changeTaskPropertyTC = (taskId: string, todolistId: string, property: PropertyType): ThunkCommonType<TaskActionsType> =>
-    async (dispatch: ThunkDispatch<RootStateType, unknown, TaskActionsType>, getState: () => RootStateType) => {
+export const changeTaskPropertyTC = (taskId: string, todolistId: string, property: PropertyType): ThunkCommonType =>
+    async (dispatch, getState) => {
         try {
             dispatch(setAppStatusAC("loading"))
             const {
@@ -158,5 +157,5 @@ export type TaskActionsType =
     | ReturnType<typeof deleteTodoAC>
     | ReturnType<typeof addTodoAC>
     | ReturnType<typeof setTodolistsAC>
-    | ReturnType<typeof setTasksAC> | SetErrorActionType | SetStatusActionType |SetTodolistEntityStatusType
+    | ReturnType<typeof setTasksAC> | AppActionsType |SetTodolistEntityStatusType
 
