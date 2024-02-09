@@ -3,14 +3,17 @@ import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {tasksReducer} from "../state/tasks-reducer";
 import {todolistReducer} from "../state/todolist-reducer";
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+import {TaskPriorities, TaskStatuses, UserDataType} from "../api/todolists-api";
 import {thunk} from "redux-thunk";
 import {appReducer} from "../state/app-reducer";
+import {loginReducer} from "../state/login-reducer";
+import {bool} from "prop-types";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistReducer,
-    app:appReducer
+    app:appReducer,
+    login:loginReducer
 })
 const todolistsId1=v1();
 const todolistsId2 =v1();
@@ -86,7 +89,12 @@ const initialAppState:RootStateType= {
     ],
     app:{
         status:"idle",
-        error:null
+        error:null,
+        isAppInitialized:false,
+        userData:null as UserDataType | null
+    },
+    login:{
+        isLoggedIn:false
     }
 }
 

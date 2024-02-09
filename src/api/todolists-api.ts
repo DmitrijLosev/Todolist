@@ -15,8 +15,10 @@ const settings = {
 
 const getResponse = async (response: Promise<Response>) => {
     let res = await response;
-   if(res.status>=400){throw new Error((await res.json()).message + "status: "+res.status) }
-        return res.json()
+    if (res.status >= 400) {
+        throw new Error((await res.json()).message + "status: " + res.status)
+    }
+    return res.json()
 }
 export const todolistsApi = {
     getTodolists(): Promise<TodolistType[]> {
@@ -52,19 +54,37 @@ export const todolistsApi = {
             body: JSON.stringify({title})
         }))
     },
-    deleteTask(todolistId: string, taskId:string): Promise<ResponseType> {
+    deleteTask(todolistId: string, taskId: string): Promise<ResponseType> {
         return getResponse(fetch(`${base_Url}/todo-lists/${todolistId}/tasks/${taskId}`, {
             ...settings,
             method: "DELETE"
         }))
     },
-    updateTask(todolistId: string, taskId:string, updateTaskModel:UpdateTaskModelType):
+    updateTask(todolistId: string, taskId: string, updateTaskModel: UpdateTaskModelType):
         Promise<ResponseType<{ item: TaskType }>> {
         return getResponse(fetch(`${base_Url}/todo-lists/${todolistId}/tasks/${taskId}`, {
             ...settings,
             method: "PUT",
             body: JSON.stringify(updateTaskModel)
         }))
+    },
+    login(login: LoginType):
+        Promise<ResponseType<{ userId?: number }>> {
+        return getResponse(fetch(`${base_Url}/auth/login`, {
+            ...settings,
+            method: "POST",
+            body: JSON.stringify(login)
+        }))
+    },
+    logout():
+        Promise<ResponseType> {
+        return getResponse(fetch(`${base_Url}/auth/login`, {
+            ...settings,
+            method: "DELETE",
+        }))
+    },
+    authMe(): Promise<ResponseType<UserDataType>> {
+        return getResponse(fetch(`${base_Url}/auth/me`, settings))
     },
 
 }
@@ -76,6 +96,7 @@ export enum TaskStatuses {
     Completed,
     Draft
 }
+
 export enum TaskPriorities {
     Low,
     Middle,
@@ -83,6 +104,7 @@ export enum TaskPriorities {
     Urgently,
     Later
 }
+
 export type ResponseType<D = {}> = {
     data: D,
     resultCode: number,
@@ -95,11 +117,24 @@ export type TaskResponseType = {
     error: null | string
 }
 
-export type UpdateTaskModelType= {
+export type UpdateTaskModelType = {
     title: string
     description: string | null
     status: number
     priority: number
     startDate: string | null
     deadline: string | null
+}
+export type LoginType =
+    {
+        email: string
+        password: string
+        rememberMe?: boolean
+        captcha?: string
+    }
+
+export type UserDataType = {
+    id: number
+    email: string
+    login: string
 }

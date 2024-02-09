@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import { todolistsApi, UpdateTaskModelType} from "../api/todolists-api";
+import {useCallback, useEffect, useState} from "react";
+import {LoginType, todolistsApi, UpdateTaskModelType} from "../api/todolists-api";
 import {TaskType} from "../state/tasks-reducer";
 
 
@@ -194,5 +194,60 @@ export const UpdateTaskPropertyByIdAndTodolistsId = () => {
         <input placeholder={"Task Property Value"}
                onChange={(e) => setPropertyValue(e.currentTarget.value)} value={taskPropertyValue}/>
         <button onClick={updateTask}>Update task</button>
+    </>
+}
+
+export const Login = () => {
+    const [state, setState] = useState<any>(null)
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [rememberMe, setRememberMe] = useState<boolean>(false)
+    const [captcha, setCaptcha] = useState<string>('')
+    const createLogin = async () => {
+        let loginData:LoginType = {email,password,rememberMe,captcha}
+        let resData = await todolistsApi.login(loginData)
+        setState(resData)
+    }
+
+    return <>
+        <div>{JSON.stringify(state)}</div>
+        <input onChange={(e) => setEmail(e.currentTarget.value)} value={email} placeholder={'email'}/>
+        <input onChange={(e) => setPassword(e.currentTarget.value)} value={password}
+               placeholder={'password'} type={'password'}/>
+        <label> Remember Me<input type={'checkbox'} onChange={(e) => setRememberMe(e.currentTarget.checked)} checked={rememberMe}/></label>
+        <input onChange={(e) => setCaptcha(e.currentTarget.value)} value={captcha}/>
+        <button onClick={createLogin}>Login</button>
+    </>
+}
+
+export const Logout = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(()=>{
+
+        const logout = async () => {
+            let resData = await todolistsApi.logout()
+            setState(resData)
+        }
+        logout()
+    },[])
+
+    return <>
+        <div>{JSON.stringify(state)}</div>
+    </>
+}
+export const AuthMe = () => {
+    const [state, setState] = useState<any>(null)
+useEffect(()=>{
+
+    const createLogin = async () => {
+        let resData = await todolistsApi.authMe()
+        setState(resData)
+    }
+    createLogin()
+},[])
+
+
+    return <>
+        <div>{JSON.stringify(state)}</div>
     </>
 }

@@ -1,24 +1,23 @@
-import {useCallback, useEffect} from "react";
-import {addTodolistTC, fetchTodolistsTC} from "../../state/todolist-reducer";
 import {useAppDispatch, useAppSelector} from "../../state/hooks";
+import {useCallback, useEffect} from "react";
+import {initializeApp} from "../../state/app-reducer";
+import {logoutTC} from "../../state/login-reducer";
 
 
+export const useApp = () => {
 
-export const useApp = (demo:boolean) => {
+    const {status, isAppInitialized, userData} = useAppSelector(state => state.app)
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const dispatch = useAppDispatch()
-    const todolistsState = useAppSelector(state=>state.todolists)
-    const status = useAppSelector(state => state.app.status)
+
     useEffect(() => {
-        if(!demo) {
-            dispatch(fetchTodolistsTC())
-        }
-    }, [demo, dispatch])
-
-
-    const addTodo = useCallback(function (newTodoTitle: string) {
-        dispatch(addTodolistTC(newTodoTitle))
+        dispatch(initializeApp())
     }, [dispatch])
 
-    return {addTodo, status, todolistsState}
+    const logoutHandler = useCallback(() =>{
+        dispatch(logoutTC())
+    },[dispatch])
+
+    return {status, isAppInitialized, userData, isLoggedIn, logoutHandler}
 
 }
