@@ -1,5 +1,6 @@
 import React from "react";
-import {Grid, Paper} from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {TodoList} from "../TodoList";
 import {useTodolistsList} from "./useTodolistsList";

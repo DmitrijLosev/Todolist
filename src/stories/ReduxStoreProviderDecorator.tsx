@@ -7,7 +7,6 @@ import {TaskPriorities, TaskStatuses, UserDataType} from "../api/todolists-api";
 import {thunk} from "redux-thunk";
 import {appReducer} from "../state/app-reducer";
 import {loginReducer} from "../state/login-reducer";
-import {bool} from "prop-types";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -29,7 +28,8 @@ const initialAppState:RootStateType= {
                 deadline: null,
                 todoListId:todolistsId1,
                 order: 0,
-                addedDate:""},
+                addedDate:"",
+            entityTaskStatus:"idle"},
             {id: v1(), title: "JS", status:TaskStatuses.Completed,
                 description:"",
                 priority: TaskPriorities.Low,
@@ -37,6 +37,7 @@ const initialAppState:RootStateType= {
                 deadline: null,
                 todoListId:todolistsId1,
                 order: 0,
+                entityTaskStatus:"idle",
                 addedDate:""},
             {id: v1(), title: "React", status:TaskStatuses.New,
                 description:"",
@@ -44,6 +45,7 @@ const initialAppState:RootStateType= {
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId1,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""},
             {id: v1(), title: "Redux", status:TaskStatuses.New,
@@ -52,6 +54,7 @@ const initialAppState:RootStateType= {
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId1,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""}],
         [todolistsId2]: [
@@ -61,6 +64,7 @@ const initialAppState:RootStateType= {
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId2,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""},
             {id: v1(), title: "Dry fish", status:TaskStatuses.Completed,
@@ -68,6 +72,7 @@ const initialAppState:RootStateType= {
                 priority: TaskPriorities.Low,
                 startDate:null,
                 deadline: null,
+                entityTaskStatus:"idle",
                 todoListId:todolistsId2,
                 order: 0,
                 addedDate:""},
@@ -77,6 +82,7 @@ const initialAppState:RootStateType= {
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId2,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""}
         ]

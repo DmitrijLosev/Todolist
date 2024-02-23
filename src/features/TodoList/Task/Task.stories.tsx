@@ -27,7 +27,7 @@ export const DoneAndNoDoneTasksExample = () =>{
             deadline: null,
             todoListId:"todolist2",
             order: 0,
-            addedDate:""}} todoId={"todolist2"} key={"1"}/>
+            addedDate:"",entityTaskStatus:"idle"}} todoId={"todolist2"} key={"1"}/>
         <Task task={{id:"2", title:"UnitTest",status:TaskStatuses.Completed,
             description:"",
             priority: TaskPriorities.Low,
@@ -35,6 +35,6 @@ export const DoneAndNoDoneTasksExample = () =>{
             deadline: null,
             todoListId:"todolist2",
             order: 0,
-            addedDate:""}} todoId={"todolist2"} key={"2"}/>
+            addedDate:"",entityTaskStatus:"idle"}} todoId={"todolist2"} key={"2"}/>
     </Provider>
 }

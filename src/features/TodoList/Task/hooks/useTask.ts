@@ -10,6 +10,7 @@ import {useAppDispatch} from "../../../../state/hooks";
 
 export const useTask = (task: TaskType, todoId: string) => {
     const dispatch = useAppDispatch()
+
     const onClickDeleteButtonHandler = () => {
         dispatch(deleteTaskTC(todoId, task.id))
     }

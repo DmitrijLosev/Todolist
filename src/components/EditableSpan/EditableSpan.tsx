@@ -1,5 +1,5 @@
 import React from "react";
-import {TextField} from "@mui/material";
+import TextField from "@mui/material/TextField";
 import {useEditableSpan} from "./hooks/useEditableSpan";
 import {RequestStatusType} from "../../state/app-reducer";
 

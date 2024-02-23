@@ -1,15 +1,13 @@
 import React from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../components/EditableSpan/EditableSpan";
-import { ButtonGroup, IconButton} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import  ButtonGroup from "@mui/material/ButtonGroup";
 import {Delete} from "@mui/icons-material";
 import {Task} from "./Task/Task";
 import {useTodoList} from "./hooks/useTodoList";
 import {SuperMUIButton} from "../../components/SuperMUIButton/SuperMUIButton";
 import {TodolistAppType} from "../../state/todolist-reducer";
-
-
-
 
 
 export type TodoListPropsType = {

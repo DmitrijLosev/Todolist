@@ -1,22 +1,20 @@
 import React from "react";
 import "../App.css";
-import {
-    AppBar,
-    Button, CircularProgress,
-    Container,
-    IconButton,
-    LinearProgress,
-    Toolbar,
-    Typography
-} from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import {Menu} from "@mui/icons-material";
 import {useApp} from "./hooks/useApp";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {TodolistsList} from "../features/TodoList/TodolistsList/TodolistsList";
 import {Login} from "../features/Login/Login";
-
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import { Menu } from '@mui/icons-material';
 
 type AppPropsType = { demo?: true }
 export const App: React.FC<AppPropsType> = ({demo = false}) => {

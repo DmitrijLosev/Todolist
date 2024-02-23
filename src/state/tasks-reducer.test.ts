@@ -2,7 +2,7 @@ import {v1} from "uuid";
 import {
     addTaskAC, changeTaskPropertyAC,
     deleteTaskAC,
-    setTasksAC,
+    setTasksAC, setTasksEntityStatusAC,
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
@@ -26,6 +26,7 @@ beforeEach(()=>{
                 deadline: null,
                 todoListId:todolistsId1,
                 order: 0,
+                entityTaskStatus:"idle",
         addedDate:""},
             {id: v1(), title: "JS", status:TaskStatuses.Completed,
                 description:"",
@@ -34,6 +35,7 @@ beforeEach(()=>{
                 deadline: null,
                 todoListId:todolistsId1,
                 order: 0,
+                entityTaskStatus:"idle",
                 addedDate:""},
             {id: v1(), title: "React", status:TaskStatuses.New,
                 description:"",
@@ -41,6 +43,7 @@ beforeEach(()=>{
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId1,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""},
             {id: v1(), title: "Redux", status:TaskStatuses.New,
@@ -49,6 +52,7 @@ beforeEach(()=>{
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId1,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""}],
         [todolistsId2]: [
@@ -58,6 +62,7 @@ beforeEach(()=>{
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId2,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""},
             {id: v1(), title: "Dry fish", status:TaskStatuses.Completed,
@@ -66,6 +71,7 @@ beforeEach(()=>{
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId2,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""},
             {id: v1(), title: "Chips", status:TaskStatuses.New,
@@ -74,6 +80,7 @@ beforeEach(()=>{
                 startDate:null,
                 deadline: null,
                 todoListId:todolistsId2,
+                entityTaskStatus:"idle",
                 order: 0,
                 addedDate:""}
         ]
@@ -201,4 +208,11 @@ test("set tasks by todo id", () => {
     expect(changedState["1"].length).toBe(0)
     expect(changedState["2"].length).toBe(3)
     expect(changedState["2"].every(t=>t.title!=="")).toBeTruthy();
+})
+test("set tasks entity status should be correct", () => {
+
+    const changedState = tasksReducer(initialState, setTasksEntityStatusAC(todolistsId1,initialState[todolistsId1][3].id, "loading"))
+
+    expect(changedState[todolistsId1].filter(t=>t.title ==="Redux")[0].entityTaskStatus).toBe("loading")
+
 })
