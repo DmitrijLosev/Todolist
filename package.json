@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
+    "@reduxjs/toolkit": "^2.2.1",
     "@storybook/addon-storyshots-puppeteer": "^7.6.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

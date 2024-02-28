@@ -1,14 +1,30 @@
-import {logoutAC, setAppStatusAC, SetErrorActionType, SetStatusActionType, setUserDataAC} from "./app-reducer";
+import {logout, setAppStatus,setUserData} from "./app-reducer";
 import {ThunkCommonType} from "./store";
 import {LoginType, todolistsApi} from "../api/todolists-api";
 import {handleAppError, handleServerNetworkError} from "../utils/error-utils";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
-const initialState: InitialStateType = {
+const initialState = {
     isLoggedIn: false
 }
 
-export const loginReducer = (state:InitialStateType = initialState, action: LoginActionsType): InitialStateType => {
+const slice = createSlice({
+    name:"login",
+    initialState:initialState,
+    reducers:{
+        toggleIsLoggedIn:(state, action:PayloadAction<{value:boolean}>)=>{
+            state.isLoggedIn = action.payload.value;
+        }
+    }
+
+})
+
+export const loginReducer = slice.reducer;
+export const {toggleIsLoggedIn} = slice.actions;
+
+
+/*(state:InitialStateType = initialState, action: LoginActionsType): InitialStateType => {
     switch (action.type) {
         case "LOGIN/TOGGLE-IS-LOGGED-IN":
             return {...state, isLoggedIn:action.payload.value}
@@ -16,19 +32,19 @@ export const loginReducer = (state:InitialStateType = initialState, action: Logi
             return state
     }
 
-}
+}*/
 
-export const toggleIsLoggedInAC = (value:boolean) => ({type: "LOGIN/TOGGLE-IS-LOGGED-IN",payload:{value}}) as const
+/*export const toggleIsLoggedInAC = (value:boolean) => ({type: "LOGIN/TOGGLE-IS-LOGGED-IN",payload:{value}}) as const*/
 
 export const loginTC = (login: LoginType): ThunkCommonType => async dispatch => {
     try {
-        dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatus({status:"loading"}))
         let res = await todolistsApi.login(login)
         if (res.resultCode === 0) {
-            dispatch(toggleIsLoggedInAC(true))
+            dispatch(toggleIsLoggedIn({value:true}))
             let response = await todolistsApi.authMe()
-            dispatch(setUserDataAC(response.data))
-            dispatch(setAppStatusAC("succeeded"))
+            dispatch(setUserData({userData:response.data}))
+            dispatch(setAppStatus({status:"succeeded"}))
         } else {
             handleAppError(res, dispatch)
         }
@@ -39,12 +55,12 @@ export const loginTC = (login: LoginType): ThunkCommonType => async dispatch => 
 
 export const logoutTC = (): ThunkCommonType => async dispatch => {
     try {
-        dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatus({status:"loading"}))
         let res = await todolistsApi.logout()
         if (res.resultCode === 0) {
-            dispatch(toggleIsLoggedInAC(false))
-            dispatch(logoutAC())
-            dispatch(setAppStatusAC("succeeded"))
+            dispatch(toggleIsLoggedIn({value:false}))
+            dispatch(logout())
+            dispatch(setAppStatus({status:"succeeded"}))
         } else {
             handleAppError(res, dispatch)
         }
@@ -53,6 +69,4 @@ export const logoutTC = (): ThunkCommonType => async dispatch => {
     }
 }
 
-export type  toggleIsLeggedInActionType= ReturnType<typeof toggleIsLoggedInAC>
-export type LoginActionsType = SetErrorActionType | SetStatusActionType | toggleIsLeggedInActionType;
-export type InitialStateType = { isLoggedIn:boolean }
+

@@ -1,5 +1,5 @@
 import {
-    changeTodoFilterAC, changeTodolistTitleTC,
+    changeTodoFilter, changeTodolistTitleTC,
     deleteTodolistTC,
     TodolistAppType
 } from "../../../state/todolist-reducer";
@@ -34,9 +34,12 @@ export const useTodoList = (todolist:TodolistAppType) => {
     }, [dispatch, todolist.id])
 
 
-    const onClickAllFilterButtonHandler = useCallback(() => dispatch(changeTodoFilterAC(todolist.id, "all")),[dispatch,todolist.id]);
-    const onClickActiveFilterButtonHandler =useCallback( () => dispatch(changeTodoFilterAC(todolist.id, "active")),[dispatch,todolist.id]);
-    const onClickCompletedFilterButtonHandler =useCallback( () => dispatch(changeTodoFilterAC(todolist.id, "completed")),[dispatch,todolist.id]);
+    const onClickAllFilterButtonHandler = useCallback(() => dispatch(changeTodoFilter({
+        todolistId:todolist.id,newTodolistFilter: "all"})),[dispatch,todolist.id]);
+    const onClickActiveFilterButtonHandler =useCallback( () => dispatch(changeTodoFilter({
+        todolistId:todolist.id,newTodolistFilter: "active"})),[dispatch,todolist.id]);
+    const onClickCompletedFilterButtonHandler =useCallback( () => dispatch(changeTodoFilter({
+        todolistId:todolist.id,newTodolistFilter: "completed"})),[dispatch,todolist.id]);
 
     return  {
         callBackChangeTodoTitle,
