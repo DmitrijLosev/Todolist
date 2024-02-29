@@ -1,13 +1,13 @@
 import {v1} from "uuid";
 import {
-    addTaskAC, changeTaskPropertyAC,
-    deleteTaskAC,
-    setTasksAC, setTasksEntityStatusAC,
+    addTask, changeTaskProperty,
+    deleteTask,
+    setTasks, setTasksEntityStatus,
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
-import {addTodoAC, deleteTodoAC, setTodolistsAC} from "./todolist-reducer";
+import {addTodolist, deleteTodolist, setTodolists} from "./todolist-reducer";
 
 let todolistsId1:string
 let todolistsId2:string
@@ -91,7 +91,7 @@ test("delete task by todoId and taskId", () => {
 
 
     const changedState = tasksReducer(initialState,
-        deleteTaskAC(todolistsId1,initialState[todolistsId1][1].id))
+        deleteTask({todoId:todolistsId1,id:initialState[todolistsId1][1].id}))
 
     expect(changedState[todolistsId1].length).toBe(3);
     expect(changedState[todolistsId2].length).toBe(3);
@@ -104,14 +104,14 @@ test("add new task", () => {
 
 
     const changedState = tasksReducer(initialState,
-        addTaskAC({id: v1(), title: "Apple", status:TaskStatuses.New,
+        addTask({task:{id: v1(), title: "Apple", status:TaskStatuses.New,
             description:"",
             priority: TaskPriorities.Low,
             startDate:null,
             deadline: null,
             todoListId:todolistsId2,
             order: 0,
-            addedDate:""}))
+            addedDate:""}}))
 
     expect(changedState[todolistsId1].length).toBe(4);
     expect(changedState[todolistsId2].length).toBe(4);
@@ -123,7 +123,7 @@ test("change task title", () => {
 
 
     const changedState = tasksReducer(initialState,
-        changeTaskPropertyAC({...initialState[todolistsId2][2],title: "Meat"} ))
+        changeTaskProperty({task:{...initialState[todolistsId2][2],title: "Meat"} }))
 
     expect(changedState[todolistsId1].length).toBe(4);
     expect(changedState[todolistsId2].length).toBe(3);
@@ -134,7 +134,7 @@ test("change task title", () => {
 test("change task status by todoId and taskId", () => {
 
     const changedState = tasksReducer(initialState,
-        changeTaskPropertyAC( {...initialState[todolistsId1][0],status:TaskStatuses.Completed}))
+        changeTaskProperty( {task:{...initialState[todolistsId1][0],status:TaskStatuses.Completed}}))
 
     expect(changedState[todolistsId1][0].status).toBe(TaskStatuses.Completed)
     expect(changedState[todolistsId2][0].status).toBe(TaskStatuses.New)
@@ -142,7 +142,7 @@ test("change task status by todoId and taskId", () => {
 test("delete all tasks because todo was deleted", () => {
 
     const changedState = tasksReducer(initialState,
-        deleteTodoAC(todolistsId2))
+        deleteTodolist({todoId :todolistsId2}))
 
     expect(changedState[todolistsId1].length).toBe(4);
     expect(changedState[todolistsId2]).toBeUndefined();
@@ -152,8 +152,8 @@ test("add empty task list", () => {
 
 
     const changedState = tasksReducer({},
-       addTodoAC({id: todolistsId1, title: "What to learn",addedDate: "",
-           order: 0}))
+       addTodolist({todolist:{id: todolistsId1, title: "What to learn",addedDate: "",
+           order: 0}}))
 
     expect(Object.keys(changedState).length).toBe(1)
     expect(changedState[todolistsId1].length).toBe(0);
@@ -163,12 +163,12 @@ test("add empty task list", () => {
 test("add todolists with empty tasks in task state", () => {
 
     const changedState = tasksReducer({},
-        setTodolistsAC([
+        setTodolists({todolists:[
             {id: todolistsId1, title: "What to learn",addedDate: "",
                 order: 0},
             {id: todolistsId2, title: "What to buy",addedDate: "",
                 order: 0}
-        ]))
+        ]}))
 
     expect(Object.keys(changedState)).toStrictEqual([todolistsId1,todolistsId2])
     expect(Object.keys(changedState[todolistsId1]).length).toBe(0);
@@ -178,7 +178,7 @@ test("add todolists with empty tasks in task state", () => {
 test("set tasks by todo id", () => {
 
     const changedState = tasksReducer({["1"]:[],["2"]:[]},
-        setTasksAC("2", [
+        setTasks({todolistId:"2",tasks: [
             {id: v1(), title: "Beer", status:TaskStatuses.New,
                 description:"",
                 priority: TaskPriorities.Low,
@@ -203,7 +203,7 @@ test("set tasks by todo id", () => {
                 todoListId:todolistsId2,
                 order: 0,
                 addedDate:""}
-        ]))
+        ]}))
 
     expect(changedState["1"].length).toBe(0)
     expect(changedState["2"].length).toBe(3)
@@ -211,7 +211,7 @@ test("set tasks by todo id", () => {
 })
 test("set tasks entity status should be correct", () => {
 
-    const changedState = tasksReducer(initialState, setTasksEntityStatusAC(todolistsId1,initialState[todolistsId1][3].id, "loading"))
+    const changedState = tasksReducer(initialState, setTasksEntityStatus({todolistId:todolistsId1,taskId:initialState[todolistsId1][3].id, status:"loading"}))
 
     expect(changedState[todolistsId1].filter(t=>t.title ==="Redux")[0].entityTaskStatus).toBe("loading")
 

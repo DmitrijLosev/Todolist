@@ -4,7 +4,7 @@ import {LoginType, todolistsApi} from "../api/todolists-api";
 import {handleAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-
+export type InitialStateType = typeof initialState
 const initialState = {
     isLoggedIn: false
 }

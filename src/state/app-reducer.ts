@@ -82,5 +82,5 @@ export const initializeApp = ():ThunkCommonType => async dispatch =>{
 }
 
 
-
+export type InitialStateType = typeof initialState
 export type RequestStatusType = "idle" | "loading"| "succeeded"| "failed"

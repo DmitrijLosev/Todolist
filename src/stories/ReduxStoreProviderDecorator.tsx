@@ -1,5 +1,5 @@
 import {Provider} from "react-redux";
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
+import { combineReducers} from "redux";
 import {tasksReducer} from "../state/tasks-reducer";
 import {todolistReducer} from "../state/todolist-reducer";
 import {v1} from "uuid";
@@ -7,6 +7,7 @@ import {TaskPriorities, TaskStatuses, UserDataType} from "../api/todolists-api";
 import {thunk} from "redux-thunk";
 import {appReducer} from "../state/app-reducer";
 import {loginReducer} from "../state/login-reducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -97,7 +98,7 @@ const initialAppState:RootStateType= {
         status:"idle",
         error:null,
         isAppInitialized:false,
-        userData:null as UserDataType | null
+        userData:null,
     },
     login:{
         isLoggedIn:false
@@ -106,8 +107,11 @@ const initialAppState:RootStateType= {
 
 export type RootStateType=ReturnType<typeof rootReducer>
 
-const storyBookStore = legacy_createStore(rootReducer, initialAppState as RootStateType & undefined,
-    applyMiddleware(thunk))
+const storyBookStore = configureStore({
+    reducer:rootReducer,
+    preloadedState:initialAppState,
+    middleware:getDefaultMiddleware => getDefaultMiddleware().prepend(thunk)
+})
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>

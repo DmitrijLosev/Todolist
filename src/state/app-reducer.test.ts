@@ -20,22 +20,22 @@ beforeEach(()=>{
 
 test("correct error message should be set", () => {
     const changedState =appReducer(initialState,
-        setAppError("Error"))
+        setAppError({error:"Error"}))
     expect(changedState.error).toBe("Error");
 })
 test("correct status should be set", () => {
     const changedState =appReducer(initialState,
-        setAppStatus("loading"))
+        setAppStatus({status:"loading"}))
     expect(changedState.status).toBe("loading");
 })
 test("correct initialization should be set", () => {
     const changedState =appReducer(initialState,
-        setAppInitialized(true))
+        setAppInitialized({value:true}))
     expect(changedState.isAppInitialized).toBe(true);
 })
 test("set user data in state", () => {
     const changedState =appReducer(initialState,
-        setUserData({email:"xxx@.com", login:"Dima", id: 1221}))
+        setUserData({userData:{email:"xxx@.com", login:"Dima", id: 1221}}))
     expect(changedState.userData?.email).toBe("xxx@.com");
     expect(changedState.userData?.login).toBe("Dima");
     expect(changedState.userData?.id).toBe( 1221);
